@@ -891,6 +891,8 @@ namespace QFramework
 #endif
 }
 '''
+
+'''
 pregex = '(async)'
 areg = '([^{]*)((?:\{[^}]*\}|//.*\r?\n|"[^"]*"|[\S\s])*?\{(?:\{[^}]*\}|//.*\r?\n|"[^"]*"|[\S\s])*?)\}'
 regex = '\b(public|private|internal|protected|void)\s*s*\b(async)?\s*\b(static|virtual|abstract|void)?\s*\b(async)?\b(Task)?\s*[a-zA-Z]*(\s[A-Za-z_][A-Za-z_0-9]*\s*)\((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_][A-Za-z_0-9]*\s*)[,]?\s*)+\)'
@@ -900,3 +902,29 @@ for x in re.findall(regex, teststr):
     for line in lines:
         if '{' not in line and '}' not in line:
             print(line.strip())
+'''
+
+teststr = "protected void sendEmail()"
+
+IDENT = '([A-Za-z_][A-Za-z_0-9]*)'
+DATATYPE = '(string|int|short|double|float)\s*'
+COMMA = '\s*,\s*'
+
+# protected internal, private protected, public static  should be added!
+regex_access_modifier = '(public|private|internal|protected|static)?\s*'
+
+regex_async = '(async)?\s*'
+
+regex_return = '(void|int|short|float|double|string|bool)\s*'
+
+regex_method_name = IDENT + '\s*'
+
+regex_paramlist =  '\((' + DATATYPE + IDENT +')?\)'
+
+regex = regex_access_modifier + regex_async + regex_return + regex_method_name + regex_paramlist
+
+for x in re.findall(regex, teststr):
+    print("x=", x)
+    for line in x:
+        print('line=',line)
+        
