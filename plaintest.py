@@ -904,27 +904,25 @@ for x in re.findall(regex, teststr):
             print(line.strip())
 '''
 
-teststr = "protected void sendEmail()"
+#teststr = "public abstract Task myTask"
 
-IDENT = '([A-Za-z_][A-Za-z_0-9]*)'
-DATATYPE = '(string|int|short|double|float)\s*'
-COMMA = '\s*,\s*'
+regex_org = "\b(public|private|internal|protected|void)\s*s*\b(async)?\s*\b(static|virtual|abstract|void)?\s*\b(async)?\b(Task)?\s*[a-zA-Z]*(?<method>\s[A-Za-z_][A-Za-z_0-9]*\s*)\((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_][A-Za-z_0-9]*\s*)[,]?\s*)+\)"
 
-# protected internal, private protected, public static  should be added!
-regex_access_modifier = '(public|private|internal|protected|static)?\s*'
+regex = "(public|private|internal|protected|void)\s*(async)?\s*(static|virtual|abstract|void)?\s*(async)?\s*(Task)?\s*[a-zA-Z]*(?P<method>[A-Za-z_][A-Za-z_0-9]*\s*)\((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_][A-Za-z_0-9]*\s*)[,]?\s*)+\)"
 
-regex_async = '(async)?\s*'
+regex2 = "(public|private|internal|protected|void)\s*(async)?\s*(static|virtual|abstract|void)?\s*(async)?\s*(Task)?\s*(?P<taskname>[A-Za-z]*\s*)\s*"
 
-regex_return = '(void|int|short|float|double|string|bool)\s*'
-
-regex_method_name = IDENT + '\s*'
-
-regex_paramlist =  '\((' + DATATYPE + IDENT +')?\)'
-
-regex = regex_access_modifier + regex_async + regex_return + regex_method_name + regex_paramlist
-
-for x in re.findall(regex, teststr):
+regex = "(public|private|internal|protected|void)\s*" + \
+        "(async)?\s*" + \
+        "(static|virtual|abstract|void)?\s*" + \
+        "(async)?\s*" + \
+        "(Task)?\s*" + \
+        "(?P<taskname>[A-Za-z]*\s*)\s*"
+'''
+        "(?P<method>[A-Za-z_][A-Za-z_0-9]*\s*)\((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_][A-Za-z_0-9]*\s*)[,]?\s*)+\)"
+'''
+for x in re.findall(regex2, teststr):
     print("x=", x)
     for line in x:
         print('line=',line)
-        
+
