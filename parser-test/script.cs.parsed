@@ -1,0 +1,890 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" xmlns:cpp="http://www.srcML.org/srcML/cpp" revision="1.0.0" language="C#" filename="script.cs"><using>using <name>System</name>;</using>
+<using>using <name><name>System</name><operator>.</operator><name>Collections</name><operator>.</operator><name>Generic</name></name>;</using>
+<using>using <name>UnityEngine</name>;</using>
+
+<namespace>namespace <name>QFramework</name>
+<block>{
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Architecture</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IArchitecture</name>
+    <block>{
+        <function_decl><type><name>void</name></type> <name><name>RegisterSystem</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>system</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>ISystem</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>void</name></type> <name><name>RegisterModel</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>model</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>IModel</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>void</name></type> <name><name>RegisterUtility</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>utility</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>IUtility</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>T</name></type> <name><name>GetSystem</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>ISystem</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>T</name></type> <name><name>GetModel</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>IModel</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>T</name></type> <name><name>GetUtility</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>IUtility</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>ICommand</name></constraint>, <constraint><name>new</name>()</constraint></where>;</function_decl>
+        <function_decl><type><name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>command</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>ICommand</name></constraint></where>;</function_decl>
+
+        <function_decl><type><name>TResult</name></type> <name><name>SendQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>IQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name></type> <name>query</name></decl></parameter>)</parameter_list>;</function_decl>
+
+        <function_decl><type><name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>new</name>()</constraint></where>;</function_decl>
+        <function_decl><type><name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>e</name></decl></parameter>)</parameter_list>;</function_decl>
+
+        <function_decl><type><name>IUnRegister</name></type> <name><name>RegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>;</function_decl>
+        <function_decl><type><name>void</name></type> <name><name>UnRegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>abstract</specifier> class <name><name>Architecture</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IArchitecture</name></super></super_list> <where>where <name>T</name> : <constraint><name><name>Architecture</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></constraint>, <constraint><name>new</name>()</constraint></where>
+    <block>{
+        <comment type="line" format="doxygen">/// &lt;summary&gt;</comment>
+        <comment type="line" format="doxygen">/// æ¯å¦åå§åå®æ </comment>
+        <comment type="line" format="doxygen">/// &lt;/summary&gt;</comment>
+        <decl_stmt><decl><type><specifier>private</specifier> <name>bool</name></type> <name>mInited</name> <init>= <expr><literal type="boolean">false</literal></expr></init></decl>;</decl_stmt>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>List</name><argument_list type="generic">&lt;<argument><name>ISystem</name></argument>&gt;</argument_list></name></type> <name>mSystems</name> <init>= <expr><operator>new</operator> <call><name><name>List</name><argument_list type="generic">&lt;<argument><name>ISystem</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>List</name><argument_list type="generic">&lt;<argument><name>IModel</name></argument>&gt;</argument_list></name></type> <name>mModels</name> <init>= <expr><operator>new</operator> <call><name><name>List</name><argument_list type="generic">&lt;<argument><name>IModel</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <decl_stmt><decl><type><specifier>public</specifier> <specifier>static</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>OnRegisterPatch</name> <init>= <expr><lambda><parameter_list type="pseudo"><parameter><decl><name>architecture</name></decl></parameter></parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>T</name></type> <name>mArchitecture</name></decl>;</decl_stmt>
+
+        <property><type><specifier>public</specifier> <specifier>static</specifier> <name>IArchitecture</name></type> <name>Interface</name>
+        <block>{
+            <function><name>get</name>
+            <block>{<block_content>
+                <if_stmt><if>if <condition>(<expr><name>mArchitecture</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition>
+                <block>{<block_content>
+                    <expr_stmt><expr><call><name>MakeSureArchitecture</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+                </block_content>}</block></if></if_stmt>
+
+                <return>return <expr><name>mArchitecture</name></expr>;</return>
+            </block_content>}</block></function>
+        }</block></property>
+
+
+        <function><type><specifier>static</specifier> <name>void</name></type> <name>MakeSureArchitecture</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <if_stmt><if>if <condition>(<expr><name>mArchitecture</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><name>mArchitecture</name> <operator>=</operator> <operator>new</operator> <call><name>T</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+                <expr_stmt><expr><call><name><name>mArchitecture</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+                <expr_stmt><expr><ternary><condition><expr><name>OnRegisterPatch</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>(<argument><expr><name>mArchitecture</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+
+                <foreach>foreach <control>(<init><decl><type><name>var</name></type> <name>architectureModel</name> <range>in <expr><name><name>mArchitecture</name><operator>.</operator><name>mModels</name></name></expr></range></decl></init>)</control>
+                <block>{<block_content>
+                    <expr_stmt><expr><call><name><name>architectureModel</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+                </block_content>}</block></foreach>
+
+                <expr_stmt><expr><call><name><name>mArchitecture</name><operator>.</operator><name>mModels</name><operator>.</operator><name>Clear</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+                <foreach>foreach <control>(<init><decl><type><name>var</name></type> <name>architectureSystem</name> <range>in <expr><name><name>mArchitecture</name><operator>.</operator><name>mSystems</name></name></expr></range></decl></init>)</control>
+                <block>{<block_content>
+                    <expr_stmt><expr><call><name><name>architectureSystem</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+                </block_content>}</block></foreach>
+
+                <expr_stmt><expr><call><name><name>mArchitecture</name><operator>.</operator><name>mSystems</name><operator>.</operator><name>Clear</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+
+                <expr_stmt><expr><name><name>mArchitecture</name><operator>.</operator><name>mInited</name></name> <operator>=</operator> <literal type="boolean">true</literal></expr>;</expr_stmt>
+            </block_content>}</block></if></if_stmt>
+        </block_content>}</block></function>
+
+        <function_decl><type><specifier>protected</specifier> <specifier>abstract</specifier> <name>void</name></type> <name>Init</name><parameter_list>()</parameter_list>;</function_decl>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name>IOCContainer</name></type> <name>mContainer</name> <init>= <expr><operator>new</operator> <call><name>IOCContainer</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>RegisterSystem</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TSystem</name></type> <name>system</name></decl></parameter>)</parameter_list> <where>where <name>TSystem</name> : <constraint><name>ISystem</name></constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>system</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <expr_stmt><expr><call><name><name>mContainer</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>system</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+            <if_stmt><if>if <condition>(<expr><operator>!</operator><name>mInited</name></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>mSystems</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>system</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></if>
+            <else>else
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>system</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></else></if_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>RegisterModel</name><argument_list type="generic">&lt;<argument><name>TModel</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TModel</name></type> <name>model</name></decl></parameter>)</parameter_list> <where>where <name>TModel</name> : <constraint><name>IModel</name></constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <expr_stmt><expr><call><name><name>mContainer</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>TModel</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+            <if_stmt><if>if <condition>(<expr><operator>!</operator><name>mInited</name></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>mModels</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>model</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></if>
+            <else>else
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>model</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></else></if_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>RegisterUtility</name><argument_list type="generic">&lt;<argument><name>TUtility</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TUtility</name></type> <name>utility</name></decl></parameter>)</parameter_list> <where>where <name>TUtility</name> : <constraint><name>IUtility</name></constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mContainer</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>TUtility</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>utility</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>TSystem</name></type> <name><name>GetSystem</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>TSystem</name> : <constraint>class</constraint>, <constraint><name>ISystem</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>mContainer</name><operator>.</operator><name><name>Get</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>TModel</name></type> <name><name>GetModel</name><argument_list type="generic">&lt;<argument><name>TModel</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>TModel</name> : <constraint>class</constraint>, <constraint><name>IModel</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>mContainer</name><operator>.</operator><name><name>Get</name><argument_list type="generic">&lt;<argument><name>TModel</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>TUtility</name></type> <name><name>GetUtility</name><argument_list type="generic">&lt;<argument><name>TUtility</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>TUtility</name> : <constraint>class</constraint>, <constraint><name>IUtility</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>mContainer</name><operator>.</operator><name><name>Get</name><argument_list type="generic">&lt;<argument><name>TUtility</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>TCommand</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>TCommand</name> : <constraint><name>ICommand</name></constraint>, <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>command</name> <init>= <expr><operator>new</operator> <call><name>TCommand</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+            <expr_stmt><expr><call><name><name>command</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <expr_stmt><expr><call><name><name>command</name><operator>.</operator><name>Execute</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>TCommand</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TCommand</name></type> <name>command</name></decl></parameter>)</parameter_list> <where>where <name>TCommand</name> : <constraint><name>ICommand</name></constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>command</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <expr_stmt><expr><call><name><name>command</name><operator>.</operator><name>Execute</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>TResult</name></type> <name><name>SendQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>IQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name></type> <name>query</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>query</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <return>return <expr><call><name><name>query</name><operator>.</operator><name>Do</name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name>TypeEventSystem</name></type> <name>mTypeEventSystem</name> <init>= <expr><operator>new</operator> <call><name>TypeEventSystem</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>TEvent</name> : <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mTypeEventSystem</name><operator>.</operator><name><name>Send</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TEvent</name></type> <name>e</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mTypeEventSystem</name><operator>.</operator><name><name>Send</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name><name>RegisterEvent</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>mTypeEventSystem</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>UnRegisterEvent</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mTypeEventSystem</name><operator>.</operator><name><name>UnRegister</name><argument_list type="generic">&lt;<argument><name>TEvent</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name><name>IOnEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>OnEvent</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>e</name></decl></parameter>)</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>OnGlobalEventExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>IUnRegister</name></type> <name><name>RegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name><name>IOnEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint>struct</constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>TypeEventSystem</name><operator>.</operator><name>Global</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name><name>self</name><operator>.</operator><name>OnEvent</name></name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>UnRegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name><name>IOnEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint>struct</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>TypeEventSystem</name><operator>.</operator><name>Global</name><operator>.</operator><name><name>UnRegister</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name><name>self</name><operator>.</operator><name>OnEvent</name></name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Controller</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IController</name> <super_list>: <super><name>IBelongToArchitecture</name></super>, <super><name>ICanSendCommand</name></super>, <super><name>ICanGetSystem</name></super>, <super><name>ICanGetModel</name></super>,
+        <super><name>ICanRegisterEvent</name></super>, <super><name>ICanSendQuery</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>System</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>ISystem</name> <super_list>: <super><name>IBelongToArchitecture</name></super>, <super><name>ICanSetArchitecture</name></super>, <super><name>ICanGetModel</name></super>, <super><name>ICanGetUtility</name></super>,
+        <super><name>ICanRegisterEvent</name></super>, <super><name>ICanSendEvent</name></super>, <super><name>ICanGetSystem</name></super></super_list>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>Init</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>abstract</specifier> class <name>AbstractSystem</name> <super_list>: <super><name>ISystem</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name>IArchitecture</name></type> <name>mArchitecture</name></decl>;</decl_stmt>
+
+        <function><type><name>IArchitecture</name></type> <name><name>IBelongToArchitecture</name><operator>.</operator><name>GetArchitecture</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name>mArchitecture</name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>ICanSetArchitecture</name><operator>.</operator><name>SetArchitecture</name></name><parameter_list>(<parameter><decl><type><name>IArchitecture</name></type> <name>architecture</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mArchitecture</name> <operator>=</operator> <name>architecture</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>ISystem</name><operator>.</operator><name>Init</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name>OnInit</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function_decl><type><specifier>protected</specifier> <specifier>abstract</specifier> <name>void</name></type> <name>OnInit</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Model</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IModel</name> <super_list>: <super><name>IBelongToArchitecture</name></super>, <super><name>ICanSetArchitecture</name></super>, <super><name>ICanGetUtility</name></super>, <super><name>ICanSendEvent</name></super></super_list>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>Init</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>abstract</specifier> class <name>AbstractModel</name> <super_list>: <super><name>IModel</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name>IArchitecture</name></type> <name>mArchitecturel</name></decl>;</decl_stmt>
+
+        <function><type><name>IArchitecture</name></type> <name><name>IBelongToArchitecture</name><operator>.</operator><name>GetArchitecture</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name>mArchitecturel</name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>ICanSetArchitecture</name><operator>.</operator><name>SetArchitecture</name></name><parameter_list>(<parameter><decl><type><name>IArchitecture</name></type> <name>architecture</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mArchitecturel</name> <operator>=</operator> <name>architecture</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>IModel</name><operator>.</operator><name>Init</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name>OnInit</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function_decl><type><specifier>protected</specifier> <specifier>abstract</specifier> <name>void</name></type> <name>OnInit</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Utility</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IUtility</name>
+    <block>{
+    }</block></interface>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Command</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>ICommand</name> <super_list>: <super><name>IBelongToArchitecture</name></super>, <super><name>ICanSetArchitecture</name></super>, <super><name>ICanGetSystem</name></super>, <super><name>ICanGetModel</name></super>, <super><name>ICanGetUtility</name></super>,
+        <super><name>ICanSendEvent</name></super>, <super><name>ICanSendCommand</name></super>, <super><name>ICanSendQuery</name></super></super_list>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>Execute</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>abstract</specifier> class <name>AbstractCommand</name> <super_list>: <super><name>ICommand</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name>IArchitecture</name></type> <name>mArchitecture</name></decl>;</decl_stmt>
+
+        <function><type><name>IArchitecture</name></type> <name><name>IBelongToArchitecture</name><operator>.</operator><name>GetArchitecture</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name>mArchitecture</name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>ICanSetArchitecture</name><operator>.</operator><name>SetArchitecture</name></name><parameter_list>(<parameter><decl><type><name>IArchitecture</name></type> <name>architecture</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mArchitecture</name> <operator>=</operator> <name>architecture</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><name>void</name></type> <name><name>ICommand</name><operator>.</operator><name>Execute</name></name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name>OnExecute</name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function_decl><type><specifier>protected</specifier> <specifier>abstract</specifier> <name>void</name></type> <name>OnExecute</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Query</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name><name>IQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IBelongToArchitecture</name></super>, <super><name>ICanSetArchitecture</name></super>, <super><name>ICanGetModel</name></super>, <super><name>ICanGetSystem</name></super>,
+        <super><name>ICanSendQuery</name></super></super_list>
+    <block>{
+        <function_decl><type><name>TResult</name></type> <name>Do</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>abstract</specifier> class <name><name>AbstractQuery</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name><name>IQuery</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></super></super_list>
+    <block>{
+        <function><type><specifier>public</specifier> <name>T</name></type> <name>Do</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><call><name>OnDo</name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function_decl><type><specifier>protected</specifier> <specifier>abstract</specifier> <name>T</name></type> <name>OnDo</name><parameter_list>()</parameter_list>;</function_decl>
+
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name>IArchitecture</name></type> <name>mArchitecture</name></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IArchitecture</name></type> <name>GetArchitecture</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name>mArchitecture</name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>SetArchitecture</name><parameter_list>(<parameter><decl><type><name>IArchitecture</name></type> <name>architecture</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mArchitecture</name> <operator>=</operator> <name>architecture</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>Rule</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IBelongToArchitecture</name>
+    <block>{
+        <function_decl><type><name>IArchitecture</name></type> <name>GetArchitecture</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <interface><specifier>public</specifier> interface <name>ICanSetArchitecture</name>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>SetArchitecture</name><parameter_list>(<parameter><decl><type><name>IArchitecture</name></type> <name>architecture</name></decl></parameter>)</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <interface><specifier>public</specifier> interface <name>ICanGetModel</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanGetModelExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>T</name></type> <name><name>GetModel</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanGetModel</name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>IModel</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>GetModel</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanGetSystem</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanGetSystemExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>T</name></type> <name><name>GetSystem</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanGetSystem</name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>ISystem</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>GetSystem</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanGetUtility</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanGetUtilityExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>T</name></type> <name><name>GetUtility</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanGetUtility</name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint>class</constraint>, <constraint><name>IUtility</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>GetUtility</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanRegisterEvent</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanRegisterEventExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>IUnRegister</name></type> <name><name>RegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanRegisterEvent</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>RegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>UnRegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanRegisterEvent</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>UnRegisterEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanSendCommand</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanSendCommandExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanSendCommand</name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>ICommand</name></constraint>, <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanSendCommand</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name>T</name></type> <name>command</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>ICommand</name></constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>SendCommand</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>(<argument><expr><name>command</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanSendEvent</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanSendEventExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanSendEvent</name></type> <name>self</name></decl></parameter>)</parameter_list> <where>where <name>T</name> : <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanSendEvent</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name>T</name></type> <name>e</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name><name>SendEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <interface><specifier>public</specifier> interface <name>ICanSendQuery</name> <super_list>: <super><name>IBelongToArchitecture</name></super></super_list>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>CanSendQueryExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>TResult</name></type> <name><name>SendQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>ICanSendQuery</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name><name>IQuery</name><argument_list type="generic">&lt;<argument><name>TResult</name></argument>&gt;</argument_list></name></type> <name>query</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>self</name><operator>.</operator><name>GetArchitecture</name></name><argument_list>()</argument_list></call><operator>.</operator><call><name>SendQuery</name><argument_list>(<argument><expr><name>query</name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>TypeEventSystem</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IUnRegister</name>
+    <block>{
+        <function_decl><type><name>void</name></type> <name>UnRegister</name><parameter_list>()</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <interface><specifier>public</specifier> interface <name>IUnRegisterList</name>
+    <block>{
+        <property><type><name><name>List</name><argument_list type="generic">&lt;<argument><name>IUnRegister</name></argument>&gt;</argument_list></name></type> <name>UnregisterList</name> <block>{ <function_decl><name>get</name>;</function_decl> }</block></property>
+    }</block></interface>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>IUnRegisterListExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>AddToUnregisterList</name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>IUnRegister</name></type> <name>self</name></decl></parameter>, <parameter><decl><type><name>IUnRegisterList</name></type> <name>unRegisterList</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>unRegisterList</name><operator>.</operator><name>UnregisterList</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>self</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>UnRegisterAll</name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>IUnRegisterList</name></type> <name>self</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <foreach>foreach <control>(<init><decl><type><name>var</name></type> <name>unRegister</name> <range>in <expr><name><name>self</name><operator>.</operator><name>UnregisterList</name></name></expr></range></decl></init>)</control>
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>unRegister</name><operator>.</operator><name>UnRegister</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></foreach>
+
+            <expr_stmt><expr><call><name><name>self</name><operator>.</operator><name>UnregisterList</name><operator>.</operator><name>Clear</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <comment type="line" format="doxygen">/// &lt;summary&gt;</comment>
+    <comment type="line" format="doxygen">/// èªå®ä¹å¯æ³¨éçç±»</comment>
+    <comment type="line" format="doxygen">/// &lt;/summary&gt;</comment>
+    <struct><specifier>public</specifier> struct <name>CustomUnRegister</name> <super_list>: <super><name>IUnRegister</name></super></super_list>
+    <block>{
+        <comment type="line" format="doxygen">/// &lt;summary&gt;</comment>
+        <comment type="line" format="doxygen">/// å§æå¯¹è±¡</comment>
+        <comment type="line" format="doxygen">/// &lt;/summary&gt;</comment>
+        <property><type><specifier>private</specifier> <name>Action</name></type> <name>mOnUnRegister</name> <block>{ <function_decl><name>get</name>;</function_decl> <function_decl><name>set</name>;</function_decl> }</block></property>
+
+        <comment type="line" format="doxygen">/// &lt;summary&gt;</comment>
+        <comment type="line" format="doxygen">/// å¸¦åæé å½æ°</comment>
+        <comment type="line" format="doxygen">/// &lt;/summary&gt;</comment>
+        <comment type="line" format="doxygen">/// &lt;param name="onDispose"&gt;&lt;/param&gt;</comment>
+        <constructor><specifier>public</specifier> <name>CustomUnRegister</name><parameter_list>(<parameter><decl><type><name>Action</name></type> <name>onUnRegsiter</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnUnRegister</name> <operator>=</operator> <name>onUnRegsiter</name></expr>;</expr_stmt>
+        </block_content>}</block></constructor>
+
+        <comment type="line" format="doxygen">/// &lt;summary&gt;</comment>
+        <comment type="line" format="doxygen">/// èµæºéæ¾</comment>
+        <comment type="line" format="doxygen">/// &lt;/summary&gt;</comment>
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mOnUnRegister</name><operator>.</operator><name>Invoke</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            <expr_stmt><expr><name>mOnUnRegister</name> <operator>=</operator> <literal type="null">null</literal></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></struct>
+
+    <class><specifier>public</specifier> class <name>UnRegisterOnDestroyTrigger</name> <super_list>: <super><name>MonoBehaviour</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <specifier>readonly</specifier> <name><name>HashSet</name><argument_list type="generic">&lt;<argument><name>IUnRegister</name></argument>&gt;</argument_list></name></type> <name>mUnRegisters</name> <init>= <expr><operator>new</operator> <call><name><name>HashSet</name><argument_list type="generic">&lt;<argument><name>IUnRegister</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>AddUnRegister</name><parameter_list>(<parameter><decl><type><name>IUnRegister</name></type> <name>unRegister</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mUnRegisters</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>unRegister</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>RemoveUnRegister</name><parameter_list>(<parameter><decl><type><name>IUnRegister</name></type> <name>unRegister</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mUnRegisters</name><operator>.</operator><name>Remove</name></name><argument_list>(<argument><expr><name>unRegister</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>private</specifier> <name>void</name></type> <name>OnDestroy</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <foreach>foreach <control>(<init><decl><type><name>var</name></type> <name>unRegister</name> <range>in <expr><name>mUnRegisters</name></expr></range></decl></init>)</control>
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>unRegister</name><operator>.</operator><name>UnRegister</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></foreach>
+
+            <expr_stmt><expr><call><name><name>mUnRegisters</name><operator>.</operator><name>Clear</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> <specifier>static</specifier> class <name>UnRegisterExtension</name>
+    <block>{
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>UnRegisterWhenGameObjectDestroyed</name><parameter_list>(<parameter><decl><type><specifier>this</specifier> <name>IUnRegister</name></type> <name>unRegister</name></decl></parameter>, <parameter><decl><type><name>GameObject</name></type> <name>gameObject</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>trigger</name> <init>= <expr><call><name><name>gameObject</name><operator>.</operator><name><name>GetComponent</name><argument_list type="generic">&lt;<argument><name>UnRegisterOnDestroyTrigger</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+            <if_stmt><if>if <condition>(<expr><operator>!</operator><name>trigger</name></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><name>trigger</name> <operator>=</operator> <call><name><name>gameObject</name><operator>.</operator><name><name>AddComponent</name><argument_list type="generic">&lt;<argument><name>UnRegisterOnDestroyTrigger</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></if></if_stmt>
+
+            <expr_stmt><expr><call><name><name>trigger</name><operator>.</operator><name>AddUnRegister</name></name><argument_list>(<argument><expr><name>unRegister</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name>TypeEventSystem</name>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <specifier>readonly</specifier> <name>EasyEvents</name></type> <name>mEvents</name> <init>= <expr><operator>new</operator> <call><name>EasyEvents</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+
+        <decl_stmt><decl><type><specifier>public</specifier> <specifier>static</specifier> <specifier>readonly</specifier> <name>TypeEventSystem</name></type> <name>Global</name> <init>= <expr><operator>new</operator> <call><name>TypeEventSystem</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>Send</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><call><name><name>mEvents</name><operator>.</operator><name><name>GetEvent</name><argument_list type="generic">&lt;<argument><name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>?</condition><then><expr><operator>.</operator><call><name>Trigger</name><argument_list>(<argument><expr><operator>new</operator> <call><name>T</name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>Send</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>e</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><call><name><name>mEvents</name><operator>.</operator><name><name>GetEvent</name><argument_list type="generic">&lt;<argument><name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>?</condition><then><expr><operator>.</operator><call><name>Trigger</name><argument_list>(<argument><expr><name>e</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name><name>Register</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>e</name> <init>= <expr><call><name><name>mEvents</name><operator>.</operator><name><name>GetOrAddEvent</name><argument_list type="generic">&lt;<argument><name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+            <return>return <expr><call><name><name>e</name><operator>.</operator><name>Register</name></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>UnRegister</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>e</name> <init>= <expr><call><name><name>mEvents</name><operator>.</operator><name><name>GetEvent</name><argument_list type="generic">&lt;<argument><name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+            <if_stmt><if>if <condition>(<expr><name>e</name> <operator>!=</operator> <literal type="null">null</literal></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>e</name><operator>.</operator><name>UnRegister</name></name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></if></if_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>IOC</name></cpp:region>
+
+    <class><specifier>public</specifier> class <name>IOCContainer</name>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Dictionary</name><argument_list type="generic">&lt;<argument><name>Type</name></argument>, <argument><name>object</name></argument>&gt;</argument_list></name></type> <name>mInstances</name> <init>= <expr><operator>new</operator> <call><name><name>Dictionary</name><argument_list type="generic">&lt;<argument><name>Type</name></argument>, <argument><name>object</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>Register</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>instance</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>key</name> <init>= <expr><typeof>typeof<argument_list>(<argument><expr><name>T</name></expr></argument>)</argument_list></typeof></expr></init></decl>;</decl_stmt>
+
+            <if_stmt><if>if <condition>(<expr><call><name><name>mInstances</name><operator>.</operator><name>ContainsKey</name></name><argument_list>(<argument><expr><name>key</name></expr></argument>)</argument_list></call></expr>)</condition>
+            <block>{<block_content>
+                <expr_stmt><expr><name><name>mInstances</name><index>[<expr><name>key</name></expr>]</index></name> <operator>=</operator> <name>instance</name></expr>;</expr_stmt>
+            </block_content>}</block></if>
+            <else>else
+            <block>{<block_content>
+                <expr_stmt><expr><call><name><name>mInstances</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>key</name></expr></argument>, <argument><expr><name>instance</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            </block_content>}</block></else></if_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>T</name></type> <name><name>Get</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint>class</constraint></where>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>key</name> <init>= <expr><typeof>typeof<argument_list>(<argument><expr><name>T</name></expr></argument>)</argument_list></typeof></expr></init></decl>;</decl_stmt>
+
+            <if_stmt><if>if <condition>(<expr><macro><name>mInstances</name></macro><operator>.</operator><macro><name>TryGetValue</name><argument_list>(<argument>key</argument>, <argument>out var retInstance</argument>)</argument_list></macro></expr>)</condition>
+            <block>{<block_content>
+                <return>return <expr><name>retInstance</name> <operator>as</operator> <name>T</name></expr>;</return>
+            </block_content>}</block></if></if_stmt>
+
+            <return>return <expr><literal type="null">null</literal></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>BindableProperty</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name><name>IBindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name><name>IReadonlyBindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></super></super_list>
+    <block>{
+        <property><type><specifier>new</specifier> <name>T</name></type> <name>Value</name> <block>{ <function_decl><name>get</name>;</function_decl> <function_decl><name>set</name>;</function_decl> }</block></property>
+        <function_decl><type><name>void</name></type> <name>SetValueWithoutEvent</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>newValue</name></decl></parameter>)</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <interface><specifier>public</specifier> interface <name><name>IReadonlyBindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name>
+    <block>{
+        <property><type><name>T</name></type> <name>Value</name> <block>{ <function_decl><name>get</name>;</function_decl> }</block></property>
+        
+        <function_decl><type><name>IUnRegister</name></type> <name>RegisterWithInitValue</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>action</name></decl></parameter>)</parameter_list>;</function_decl>
+        <function_decl><type><name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onValueChanged</name></decl></parameter>)</parameter_list>;</function_decl>
+        <function_decl><type><name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onValueChanged</name></decl></parameter>)</parameter_list>;</function_decl>
+    }</block></interface>
+
+    <class><specifier>public</specifier> class <name><name>BindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name><name>IBindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></super></super_list>
+    <block>{
+        <expr_stmt><expr><specifier>public</specifier> <macro><name>BindableProperty</name><argument_list>(<argument>T defaultValue = default</argument>)</argument_list></macro>
+        <block>{
+            <expr><name>mValue</name> <operator>=</operator> <name>defaultValue</name></expr>;
+        }</block>
+
+        <specifier>protected</specifier> <name>T</name> <name>mValue</name></expr>;</expr_stmt>
+
+        <property><type><specifier>public</specifier> <name>T</name></type> <name>Value</name>
+        <block>{
+            <expr_stmt><expr><lambda><parameter_list type="pseudo"><parameter><decl><name>get</name></decl></parameter></parameter_list> =&gt;<block type="pseudo"><block_content> <expr><call><name>GetValue</name><argument_list>()</argument_list></call></expr></block_content></block></lambda></expr>;</expr_stmt>
+            <function><name>set</name>
+            <block>{<block_content>
+                <if_stmt><if>if <condition>(<expr><name>value</name> <operator>==</operator> <literal type="null">null</literal> <operator>&amp;&amp;</operator> <name>mValue</name> <operator>==</operator> <literal type="null">null</literal></expr>)</condition><block type="pseudo"><block_content> <return>return;</return></block_content></block></if></if_stmt>
+                <if_stmt><if>if <condition>(<expr><name>value</name> <operator>!=</operator> <literal type="null">null</literal> <operator>&amp;&amp;</operator> <call><name><name>value</name><operator>.</operator><name>Equals</name></name><argument_list>(<argument><expr><name>mValue</name></expr></argument>)</argument_list></call></expr>)</condition><block type="pseudo"><block_content> <return>return;</return></block_content></block></if></if_stmt>
+
+                <expr_stmt><expr><call><name>SetValue</name><argument_list>(<argument><expr><name>value</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+                <expr_stmt><expr><ternary><condition><expr><name>mOnValueChanged</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>(<argument><expr><name>value</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+            </block_content>}</block></function>
+        }</block></property>
+
+        <function><type><specifier>protected</specifier> <specifier>virtual</specifier> <name>void</name></type> <name>SetValue</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>newValue</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mValue</name> <operator>=</operator> <name>newValue</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>protected</specifier> <specifier>virtual</specifier> <name>T</name></type> <name>GetValue</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name>mValue</name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>SetValueWithoutEvent</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>newValue</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mValue</name> <operator>=</operator> <name>newValue</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>mOnValueChanged</name> <init>= <expr><lambda><parameter_list>(<parameter><decl><name>v</name></decl></parameter>)</parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onValueChanged</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnValueChanged</name> <operator>+=</operator> <name>onValueChanged</name></expr>;</expr_stmt>
+            <return>return <expr><operator>new</operator> <macro><name>BindablePropertyUnRegister</name></macro><operator>&lt;</operator><name>T</name><operator>&gt;</operator><operator>(</operator><operator>)</operator>
+            <block>{
+                <expr><name>BindableProperty</name> <operator>=</operator> <name>this</name></expr>,
+                <expr><name>OnValueChanged</name> <operator>=</operator> <name>onValueChanged</name></expr>
+            }</block></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>RegisterWithInitValue</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onValueChanged</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name>onValueChanged</name><argument_list>(<argument><expr><name>mValue</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <return>return <expr><call><name>Register</name><argument_list>(<argument><expr><name>onValueChanged</name></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function type="operator"><type><specifier>public</specifier> <specifier>static</specifier> <specifier>implicit</specifier></type> <name>operator <name>T</name></name><parameter_list>(<parameter><decl><type><name><name>BindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>property</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><name><name>property</name><operator>.</operator><name>Value</name></name></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <specifier>override</specifier> <name>string</name></type> <name>ToString</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>Value</name><operator>.</operator><name>ToString</name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onValueChanged</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnValueChanged</name> <operator>-=</operator> <name>onValueChanged</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name><name>BindablePropertyUnRegister</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IUnRegister</name></super></super_list>
+    <block>{
+        <property><type><specifier>public</specifier> <name><name>BindableProperty</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>BindableProperty</name> <block>{ <function_decl><name>get</name>;</function_decl> <function_decl><name>set</name>;</function_decl> }</block></property>
+
+        <property><type><specifier>public</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>OnValueChanged</name> <block>{ <function_decl><name>get</name>;</function_decl> <function_decl><name>set</name>;</function_decl> }</block></property>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>BindableProperty</name><operator>.</operator><name>UnRegister</name></name><argument_list>(<argument><expr><name>OnValueChanged</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+            <expr_stmt><expr><name>BindableProperty</name> <operator>=</operator> <literal type="null">null</literal></expr>;</expr_stmt>
+            <expr_stmt><expr><name>OnValueChanged</name> <operator>=</operator> <literal type="null">null</literal></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+    <cpp:region>#<cpp:directive>region</cpp:directive> <name>EasyEvent</name></cpp:region>
+
+    <interface><specifier>public</specifier> interface <name>IEasyEvent</name>
+    <block>{
+    }</block></interface>
+
+    <class><specifier>public</specifier> class <name>EasyEvent</name> <super_list>: <super><name>IEasyEvent</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name>Action</name></type> <name>mOnEvent</name> <init>= <expr><lambda><parameter_list>()</parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name>Action</name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>+=</operator> <name>onEvent</name></expr>;</expr_stmt>
+            <return>return <expr><operator>new</operator> <call><name>CustomUnRegister</name><argument_list>(<argument><expr><lambda><parameter_list>()</parameter_list> =&gt; <block>{<block_content> <expr_stmt><expr><call><name>UnRegister</name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt> </block_content>}</block></lambda></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name>Action</name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>-=</operator> <name>onEvent</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>Trigger</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><name>mOnEvent</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>()</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IEasyEvent</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>mOnEvent</name> <init>= <expr><lambda><parameter_list type="pseudo"><parameter><decl><name>e</name></decl></parameter></parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>+=</operator> <name>onEvent</name></expr>;</expr_stmt>
+            <return>return <expr><operator>new</operator> <call><name>CustomUnRegister</name><argument_list>(<argument><expr><lambda><parameter_list>()</parameter_list> =&gt; <block>{<block_content> <expr_stmt><expr><call><name>UnRegister</name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt> </block_content>}</block></lambda></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>-=</operator> <name>onEvent</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>Trigger</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>t</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><name>mOnEvent</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>(<argument><expr><name>t</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IEasyEvent</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>&gt;</argument_list></name></type> <name>mOnEvent</name> <init>= <expr><lambda><parameter_list>(<parameter><decl><name>t</name></decl></parameter>, <parameter><decl><name>k</name></decl></parameter>)</parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>+=</operator> <name>onEvent</name></expr>;</expr_stmt>
+            <return>return <expr><operator>new</operator> <call><name>CustomUnRegister</name><argument_list>(<argument><expr><lambda><parameter_list>()</parameter_list> =&gt; <block>{<block_content> <expr_stmt><expr><call><name>UnRegister</name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt> </block_content>}</block></lambda></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>-=</operator> <name>onEvent</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>Trigger</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>t</name></decl></parameter>, <parameter><decl><type><name>K</name></type> <name>k</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><name>mOnEvent</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>(<argument><expr><name>t</name></expr></argument>, <argument><expr><name>k</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name><name>EasyEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>, <argument><name>S</name></argument>&gt;</argument_list></name> <super_list>: <super><name>IEasyEvent</name></super></super_list>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>, <argument><name>S</name></argument>&gt;</argument_list></name></type> <name>mOnEvent</name> <init>= <expr><lambda><parameter_list>(<parameter><decl><name>t</name></decl></parameter>, <parameter><decl><name>k</name></decl></parameter>, <parameter><decl><name>s</name></decl></parameter>)</parameter_list> =&gt; <block>{<block_content> </block_content>}</block></lambda></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <name>IUnRegister</name></type> <name>Register</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>, <argument><name>S</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>+=</operator> <name>onEvent</name></expr>;</expr_stmt>
+            <return>return <expr><operator>new</operator> <call><name>CustomUnRegister</name><argument_list>(<argument><expr><lambda><parameter_list>()</parameter_list> =&gt; <block>{<block_content> <expr_stmt><expr><call><name>UnRegister</name><argument_list>(<argument><expr><name>onEvent</name></expr></argument>)</argument_list></call></expr>;</expr_stmt> </block_content>}</block></lambda></expr></argument>)</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>UnRegister</name><parameter_list>(<parameter><decl><type><name><name>Action</name><argument_list type="generic">&lt;<argument><name>T</name></argument>, <argument><name>K</name></argument>, <argument><name>S</name></argument>&gt;</argument_list></name></type> <name>onEvent</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><name>mOnEvent</name> <operator>-=</operator> <name>onEvent</name></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>void</name></type> <name>Trigger</name><parameter_list>(<parameter><decl><type><name>T</name></type> <name>t</name></decl></parameter>, <parameter><decl><type><name>K</name></type> <name>k</name></decl></parameter>, <parameter><decl><type><name>S</name></type> <name>s</name></decl></parameter>)</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><ternary><condition><expr><name>mOnEvent</name></expr>?</condition><then><expr><operator>.</operator><call><name>Invoke</name><argument_list>(<argument><expr><name>t</name></expr></argument>, <argument><expr><name>k</name></expr></argument>, <argument><expr><name>s</name></expr></argument>)</argument_list></call></expr></then></ternary></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <class><specifier>public</specifier> class <name>EasyEvents</name>
+    <block>{
+        <decl_stmt><decl><type><specifier>private</specifier> <specifier>static</specifier> <name>EasyEvents</name></type> <name>mGlobalEvents</name> <init>= <expr><operator>new</operator> <call><name>EasyEvents</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>T</name></type> <name><name>Get</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>IEasyEvent</name></constraint></where>
+        <block>{<block_content>
+            <return>return <expr><call><name><name>mGlobalEvents</name><operator>.</operator><name><name>GetEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</return>
+        </block_content>}</block></function>
+        
+
+        <function><type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name><name>Register</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>IEasyEvent</name></constraint>, <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mGlobalEvents</name><operator>.</operator><name><name>AddEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <decl_stmt><decl><type><specifier>private</specifier> <name><name>Dictionary</name><argument_list type="generic">&lt;<argument><name>Type</name></argument>, <argument><name>IEasyEvent</name></argument>&gt;</argument_list></name></type> <name>mTypeEvents</name> <init>= <expr><operator>new</operator> <call><name><name>Dictionary</name><argument_list type="generic">&lt;<argument><name>Type</name></argument>, <argument><name>IEasyEvent</name></argument>&gt;</argument_list></name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+        
+        <function><type><specifier>public</specifier> <name>void</name></type> <name><name>AddEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>IEasyEvent</name></constraint>, <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>mTypeEvents</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><typeof>typeof<argument_list>(<argument><expr><name>T</name></expr></argument>)</argument_list></typeof></expr></argument>, <argument><expr><operator>new</operator> <call><name>T</name><argument_list>()</argument_list></call></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>T</name></type> <name><name>GetEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>IEasyEvent</name></constraint></where>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>IEasyEvent</name></type> <name>e</name></decl>;</decl_stmt>
+
+            <if_stmt><if>if <condition>(<expr><call><name><name>mTypeEvents</name><operator>.</operator><name>TryGetValue</name></name><argument_list>(<argument><expr><typeof>typeof<argument_list>(<argument><expr><name>T</name></expr></argument>)</argument_list></typeof></expr></argument>, <argument><modifier>out</modifier> <expr><name>e</name></expr></argument>)</argument_list></call></expr>)</condition>
+            <block>{<block_content>
+                <return>return <expr><operator>(</operator><name>T</name><operator>)</operator><name>e</name></expr>;</return>
+            </block_content>}</block></if></if_stmt>
+
+            <return>return <expr>default</expr>;</return>
+        </block_content>}</block></function>
+
+        <function><type><specifier>public</specifier> <name>T</name></type> <name><name>GetOrAddEvent</name><argument_list type="generic">&lt;<argument><name>T</name></argument>&gt;</argument_list></name><parameter_list>()</parameter_list> <where>where <name>T</name> : <constraint><name>IEasyEvent</name></constraint>, <constraint><name>new</name>()</constraint></where>
+        <block>{<block_content>
+            <decl_stmt><decl><type><name>var</name></type> <name>eType</name> <init>= <expr><typeof>typeof<argument_list>(<argument><expr><name>T</name></expr></argument>)</argument_list></typeof></expr></init></decl>;</decl_stmt>
+            <if_stmt><if>if <condition>(<expr><macro><name>mTypeEvents</name></macro><operator>.</operator><macro><name>TryGetValue</name><argument_list>(<argument>eType</argument>, <argument>out var e</argument>)</argument_list></macro></expr>)</condition>
+            <block>{<block_content>
+                <return>return <expr><operator>(</operator><name>T</name><operator>)</operator><name>e</name></expr>;</return>
+            </block_content>}</block></if></if_stmt>
+
+            <decl_stmt><decl><type><name>var</name></type> <name>t</name> <init>= <expr><operator>new</operator> <call><name>T</name><argument_list>()</argument_list></call></expr></init></decl>;</decl_stmt>
+            <expr_stmt><expr><call><name><name>mTypeEvents</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>eType</name></expr></argument>, <argument><expr><name>t</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+            <return>return <expr><name>t</name></expr>;</return>
+        </block_content>}</block></function>
+    }</block></class>
+
+    <cpp:endregion>#<cpp:directive>endregion</cpp:directive></cpp:endregion>
+
+<cpp:if>#<cpp:directive>if</cpp:directive> <expr><name>UNITY_EDITOR</name></expr></cpp:if>
+    <class><specifier>internal</specifier> class <name>EditorMenus</name>
+    <block>{
+        <function><attribute>[<expr><call><name><name>UnityEditor</name><operator>.</operator><name>MenuItem</name></name><argument_list>(<argument><expr><literal type="string">"QFramework/Install QFrameworkWithToolKits"</literal></expr></argument>)</argument_list></call></expr>]</attribute>
+        <type><specifier>public</specifier> <specifier>static</specifier> <name>void</name></type> <name>InstallPackageKit</name><parameter_list>()</parameter_list>
+        <block>{<block_content>
+            <expr_stmt><expr><call><name><name>Application</name><operator>.</operator><name>OpenURL</name></name><argument_list>(<argument><expr><literal type="string">"https://qframework.cn/qf"</literal></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+        </block_content>}</block></function>
+    }</block></class>
+<cpp:endif>#<cpp:directive>endif</cpp:directive></cpp:endif>
+}</block></namespace></unit>

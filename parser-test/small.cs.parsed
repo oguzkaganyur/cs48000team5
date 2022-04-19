@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<unit xmlns="http://www.srcML.org/srcML/src" revision="1.0.0" language="C#" filename="small.cs"><function><type><name>void</name></type> <name><name>RegisterSystem</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name><parameter_list>(<parameter><decl><type><name>TSystem</name></type> <name>system</name></decl></parameter>)</parameter_list> <where>where <name>TSystem</name> : <constraint><name>ISystem</name></constraint></where>
+<block>{<block_content>
+    <expr_stmt><expr><call><name><name>system</name><operator>.</operator><name>SetArchitecture</name></name><argument_list>(<argument><expr><name>this</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+    <expr_stmt><expr><call><name><name>mContainer</name><operator>.</operator><name><name>Register</name><argument_list type="generic">&lt;<argument><name>TSystem</name></argument>&gt;</argument_list></name></name><argument_list>(<argument><expr><name>system</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+
+    <if_stmt><if>if <condition>(<expr><operator>!</operator><name>mInited</name></expr>)</condition>
+    <block>{<block_content>
+        <expr_stmt><expr><call><name><name>mSystems</name><operator>.</operator><name>Add</name></name><argument_list>(<argument><expr><name>system</name></expr></argument>)</argument_list></call></expr>;</expr_stmt>
+    </block_content>}</block></if>
+    <else>else
+    <block>{<block_content>
+        <expr_stmt><expr><call><name><name>system</name><operator>.</operator><name>Init</name></name><argument_list>()</argument_list></call></expr>;</expr_stmt>
+    </block_content>}</block></else></if_stmt>
+</block_content>}</block></function></unit>
