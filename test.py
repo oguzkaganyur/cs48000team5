@@ -10,7 +10,7 @@ count = 0
 
 topic = ['unity', 'unity3d']
 
-repo = g.search_repositories("topic:{}".format(topic[0]))
+repo = g.search_repositories("topic:{}".format(topic[0]), sort='stars')
 a = repo.get_page(0)
 print(repo.totalCount)
 print(len(a))
