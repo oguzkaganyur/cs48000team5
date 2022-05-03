@@ -5,7 +5,7 @@ import pandas as pd
 
 #g = Github("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",per_page=3)
 #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
-g = Github("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",per_page=5)
+g = Github("",per_page=5)
 
 
 count = 0
