@@ -1,16 +1,18 @@
 from github import Github
 import re
 import base64
+import pymongo
 import pandas as pd
 
-#g = Github("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",per_page=3)
-#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
-g = Github("",per_page=5)
+g = Github("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",per_page=5)
 
 
 count = 0
 
 topic = ['unity', 'unity3d']
+client = pymongo.MongoClient("mongodb+srv://cs48000team5:mGTDtJJfQhSVQn4@cluster0.bzb9t.mongodb.net/app?retryWrites=true&w=majority", 27017, tls=True, tlsAllowInvalidCertificates=True)
+db = client.app
+collection = db['functions']
 
 repo = g.search_repositories("topic:{}".format(topic[0]), sort='stars')
 a = repo.get_page(0)
@@ -96,6 +98,7 @@ while(True):
                         plain = plain.decode('utf-8')
                         functionNamesAndPaths = fun(plain, file_content.html_url)
                         listsOfLists.append(functionNamesAndPaths)
+                        collection.insert_many(functionNamesAndPaths)
                         print(functionNamesAndPaths)
 
     page = repo._fetchNextPage()
