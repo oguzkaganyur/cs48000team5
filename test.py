@@ -4,7 +4,7 @@ import base64
 import pymongo
 import pandas as pd
 
-g = Github("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",per_page=5)
+g = Github("",per_page=5)
 
 
 count = 0
