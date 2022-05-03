@@ -4,7 +4,7 @@ import pymongo
 
 client = pymongo.MongoClient("mongodb+srv://cs48000team5:mGTDtJJfQhSVQn4@cluster0.bzb9t.mongodb.net/app?retryWrites=true&w=majority", 27017, tls=True, tlsAllowInvalidCertificates=True)
 db = client.app
-collection = db['test']
+collection = db['functions']
 
 app = Flask(__name__)
 CORS(app)
@@ -17,7 +17,7 @@ def search():
     query = body['query']
 
     try:
-        collection.create_index([('name', 'text')])
+        collection.create_index([('spacedName', 'text')])
         docs = collection.find({"$text":{'$search': query}})
         results = list(docs)
         for i in range(len(results)):
