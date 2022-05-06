@@ -19,9 +19,9 @@ s = sample.read()
 # Replaces escape character with space
 f = s.replace("\n", " ")
 
-data = [["Unity","is","a","game", "Engine"],
-       ["Player ","move","right","left","movement"],
-       ["Player","Spawn","Object"]]
+data = [["Unity","is","a","game", "Engine", "unity2d", "unity3d", "unity"],
+       ["Level","select","final","boss","beginner"],
+       ["Player","move","left", "right", "movement", "controller"]]
 
 # iterate through each sentence in the file
 for i in sent_tokenize(f):
