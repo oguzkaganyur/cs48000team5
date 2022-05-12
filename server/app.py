@@ -35,22 +35,21 @@ def search():
             fileName.pop(len(fileName) - 1)
             fileName = '.'.join(fileName)
 
+            #
             vectorizer = CountVectorizer()
             X = vectorizer.fit_transform([query, results[i]['spacedName']])
             simArr = X.toarray()
             result = 1 - spatial.distance.cosine(simArr[0], simArr[1])
 
+            # file name similarity
             vectorizer2 = CountVectorizer()
             X2 = vectorizer2.fit_transform([query, fileName])
             simArr2 = X2.toarray()
             result2 = 1 - spatial.distance.cosine(simArr2[0], simArr2[1])
-            
-            result += result2
 
-            if results[i]['spacedName'] == 'Kill Player':
-                print(result)
+            # result += result2
             if result > 0:
-                print(fileName)
+                #print(fileName)
                 sums.append([result, i])
                 #print(results[i]['spacedName'])
                 # print(result)
@@ -59,7 +58,8 @@ def search():
         sums.sort(key = lambda x: x[0])
         sums.reverse()
         for i in range(len(sums[:30])):
-            print(results[sums[i][1]]['spacedName'], sums[i][0], results[sums[i][1]]['path'], sums[i][0])
+            print(results[sums[i][1]]['spacedName'], sums[i][0], results[sums[i][1]]['path'], sep="\t")
+            print('\n');
 
 
 
