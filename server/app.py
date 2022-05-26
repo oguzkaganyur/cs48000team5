@@ -35,11 +35,13 @@ def search():
             fileName.pop(len(fileName) - 1)
             fileName = '.'.join(fileName)
 
+            #
             vectorizer = CountVectorizer()
             X = vectorizer.fit_transform([query, results[i]['spacedName']])
             simArr = X.toarray()
             result = 1 - spatial.distance.cosine(simArr[0], simArr[1])
 
+            # file name similarity
             vectorizer2 = CountVectorizer()
             X2 = vectorizer2.fit_transform([query, fileName])
             simArr2 = X2.toarray()
