@@ -84,13 +84,7 @@ async def mainFunc():
     count = 0
     counter = 0
     flag = False
-    aregex = '\b(public|private|internal|protected|void)\s*s*\b(async)?\s*' \
-             '\b(static|virtual|abstract|void)?\s*\b(async)?\b(Task)?\s*[a-zA-Z]*(\s[A-Za-z_][A-Za-z_0-9]*\s*)\
-             ((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_][A-Za-z_0-9]*\s*)[,]?\s*)+\)'
-    regex = '([^{]*)((?:\{[^}]*\}|//.*\r?\n|"[^"]*"|[\S\s])*?\{(?:\{[^}]*\}|//.*\r?\n|"[^"]*"|[\S\s])*?)\}'
-    reg = '\b(public|private|internal|protected|void)\s*s*\b(async)?\s*\b(static|virtual|abstract|void)?\s*\b' \
-          '(async)?\b(Task)?\s*[a-zA-Z]*(\s[A-Za-z_][A-Za-z_0-9]*\s*)\((([a-zA-Z\[\]\<\>]*\s*[A-Za-z_]' \
-          '[A-Za-z_0-9]*\s*)[,]?\s*)+\)'
+
 
     # a loop that lets us get all the pages in Paginated list
     repoCount = 0
