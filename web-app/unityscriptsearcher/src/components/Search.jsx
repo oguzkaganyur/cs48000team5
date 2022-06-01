@@ -14,7 +14,7 @@ export const Search = () => {
   }, [debouncedValue]);
 
   return (
-    <div className="align-content relative sm:ml-48 md:ml-72 sm:-mt-10 mt-3">
+    <div className="p-10 align-content relative sm:ml-48 md:ml-72 sm:-mt-10 mt-3">
       <input
         value={text}
         type="text"
@@ -23,7 +23,7 @@ export const Search = () => {
         onChange={(e) => setText(e.target.value)}
       />
       {text !== '' && (
-        <button type="button" className="absolute top-1.5 right-4 text-2xl text-gray-500 " onClick={() => setText('')}>
+        <button type="button" className="p-10 absolute top-1.5 right-4 text-2xl text-gray-500 " onClick={() => setText('')}>
           x
         </button>
       )}
