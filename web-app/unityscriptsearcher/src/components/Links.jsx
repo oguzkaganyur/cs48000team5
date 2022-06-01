@@ -2,10 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const links = [
-    { url: '/search', text: '🔎 All' },
-    { url: '/news', text: '📰 News' },
-    { url: '/images', text: '📸 Images' },
-    { url: '/videos', text: '📺 Videos' },
+    { url: '/search', text: '🔎 Search Now' },
+
 ];
 
 export const Links = () => (
