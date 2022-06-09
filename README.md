@@ -1,5 +1,11 @@
 # CS48000 Team 5 - Unity Script Searcher
-cs48000-team5-project
+Analyzing C# Codes in Open Source Unity Projects
+
+## Team Members
+* Barış Kerem Kurt - 25272
+* Oğuz Kağan Yur - 26445
+* Rekin Barışıcı - 26339
+* Alper Berber – 28224
 
 ## Installation & Starting
 
