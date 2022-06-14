@@ -4,9 +4,7 @@ import json
 from elasticsearch import Elasticsearch
 
 es = Elasticsearch(
-    cloud_id="cs48000:ZXVyb3BlLXdlc3QzLmdjcC5jbG91ZC5lcy5pbyQyYjJkMGQ1NDBhYTU0MjJhYWJkNTRjNjY5OWMxYTdiMiQzMjI2M2I4Njg1MmE0OGNlYjE1Njk2ZmYxNjQwM2M4MA==",
-    basic_auth=('elastic', '8cztJbYVnxVKJvxmhws35usN'),
-    verify_certs=False, ssl_show_warn=False
+    #elasticsearch auth
 )
 
 

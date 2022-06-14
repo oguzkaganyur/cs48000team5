@@ -7,9 +7,7 @@ import tensorflow_hub as hub
 from elasticsearch import Elasticsearch
 
 es = Elasticsearch(
-    cloud_id="cs48000:ZXVyb3BlLXdlc3QzLmdjcC5jbG91ZC5lcy5pbyQyYjJkMGQ1NDBhYTU0MjJhYWJkNTRjNjY5OWMxYTdiMiQzMjI2M2I4Njg1MmE0OGNlYjE1Njk2ZmYxNjQwM2M4MA==",
-    basic_auth=('elastic', '8cztJbYVnxVKJvxmhws35usN'),
-    verify_certs=False, ssl_show_warn=False
+    #elasticsearch credentials
 )
 
 graph = tf.Graph()
@@ -33,7 +31,7 @@ with tf.compat.v1.Session(graph=graph) as session:
     session.run(tf.compat.v1.tables_initializer())
     print('Done')
 
-client = pymongo.MongoClient("mongodb+srv://cs48000team5:mGTDtJJfQhSVQn4@cluster0.bzb9t.mongodb.net/app?retryWrites=true&w=majority", 27017, tls=True, tlsAllowInvalidCertificates=True)
+client = pymongo.MongoClient("#mongodbcredentials", 27017, tls=True, tlsAllowInvalidCertificates=True)
 db = client.app
 collection = db['functions']
 
